@@ -14,6 +14,8 @@ import javax.swing.SwingUtilities;
  */
 public class Home extends javax.swing.JFrame {
 
+    public static UserManagement1 us;
+
     /**
      * Creates new form Home
      */
@@ -73,9 +75,11 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        UserManagement1 us = new UserManagement1();
-        jPanel2.add(us,BorderLayout.CENTER);
-        SwingUtilities.updateComponentTreeUI(jPanel2);
+        if (us == null) {
+            us = new UserManagement1();
+            jPanel2.add(us, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(jPanel2);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

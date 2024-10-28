@@ -4,7 +4,11 @@
  */
 package gui;
 
+import java.sql.ResultSet;
+import java.util.Vector;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+import model.MySQL2;
 
 /**
  *
@@ -17,6 +21,35 @@ public class UserManagement1 extends javax.swing.JPanel {
      */
     public UserManagement1() {
         initComponents();
+        loadUsers();
+    }
+
+    private void loadUsers() {
+
+        try {
+            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+            dtm.setRowCount(0);
+
+            ResultSet resultSet = MySQL2.executeSearch("SELECT * FROM `user`"
+                    + "INNER JOIN `user_type` ON `user`.`user_type_id` = `user_type`.`id`"
+                    + "INNER JOIN `status` ON `user`.`status_id` = `status`.`id`");
+
+            while (resultSet.next()) {
+                Vector vector = new Vector();
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("fname"));
+                vector.add(resultSet.getString("lname"));
+                vector.add(resultSet.getString("mobile"));
+                vector.add(resultSet.getString("username"));
+                vector.add(resultSet.getString("type"));
+                vector.add(resultSet.getString("status"));
+                dtm.addRow(vector);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -228,8 +261,10 @@ public class UserManagement1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        this.getParent().remove(this);
-        SwingUtilities.updateComponentTreeUI(this.getParent());
+//        this.getParent().remove(this);
+        Home.jPanel2.remove(this);
+        Home.us = null;
+        SwingUtilities.updateComponentTreeUI(Home.jPanel2);
     }//GEN-LAST:event_jLabel8MouseClicked
 
 
