@@ -33,13 +33,13 @@ public class UserManagement extends javax.swing.JFrame {
 
             while (resultSet.next()) {
                 Vector vector = new Vector();
-                vector.add("id");
-                vector.add("fname");
-                vector.add("lname");
-                vector.add("mobile");
-                vector.add("username");
-                vector.add("user_type_id");
-                vector.add("status");
+                vector.add(resultSet.getString("id"));
+                vector.add(resultSet.getString("fname"));
+                vector.add(resultSet.getString("lname"));
+                vector.add(resultSet.getString("mobile"));
+                vector.add(resultSet.getString("username"));
+                vector.add(resultSet.getString("user_type_id"));
+                vector.add(resultSet.getString("status"));
                 dtm.addRow(vector);
             }
 
@@ -81,7 +81,7 @@ public class UserManagement extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 51));
         jLabel1.setText("User Management");
 
@@ -100,12 +100,16 @@ public class UserManagement extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 204, 0));
         jButton1.setText("Create Account");
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(0, 204, 0));
         jButton2.setText("Update Account");
 
+        jButton3.setBackground(new java.awt.Color(0, 204, 0));
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("Active");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
