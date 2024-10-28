@@ -23,6 +23,20 @@ public class Home extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void removeUserManagement() {
+        jPanel2.remove(us);
+        us = null;
+        SwingUtilities.updateComponentTreeUI(jPanel2);
+    }
+
+    public void addUserManagement() {
+        if (us == null) {
+            us = new UserManagement1(this);
+            jPanel2.add(us, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(jPanel2);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,11 +89,7 @@ public class Home extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (us == null) {
-            us = new UserManagement1();
-            jPanel2.add(us, BorderLayout.CENTER);
-            SwingUtilities.updateComponentTreeUI(jPanel2);
-        }
+        addUserManagement();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -100,6 +110,6 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
-    public static javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

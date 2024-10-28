@@ -16,12 +16,14 @@ import model.MySQL2;
  */
 public class UserManagement1 extends javax.swing.JPanel {
 
+    private Home home;
     /**
      * Creates new form UserManagement1
      */
-    public UserManagement1() {
+    public UserManagement1(Home home) {
         initComponents();
         loadUsers();
+        this.home = home;
     }
 
     private void loadUsers() {
@@ -262,9 +264,10 @@ public class UserManagement1 extends javax.swing.JPanel {
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
 //        this.getParent().remove(this);
-        Home.jPanel2.remove(this);
-        Home.us = null;
-        SwingUtilities.updateComponentTreeUI(Home.jPanel2);
+//        Home.jPanel2.remove(this);
+//        Home.us = null;
+//        SwingUtilities.updateComponentTreeUI(Home.jPanel2);
+        home.removeUserManagement();
     }//GEN-LAST:event_jLabel8MouseClicked
 
 
