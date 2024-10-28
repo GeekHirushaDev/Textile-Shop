@@ -267,7 +267,7 @@ public class UserManagement1 extends javax.swing.JPanel {
 //        Home.jPanel2.remove(this);
 //        Home.us = null;
 //        SwingUtilities.updateComponentTreeUI(Home.jPanel2);
-        home.removeUserManagement();
+        this.home.removeUserManagement();
     }//GEN-LAST:event_jLabel8MouseClicked
 
 
