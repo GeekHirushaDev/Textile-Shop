@@ -26,19 +26,19 @@ public class UserManagement1 extends javax.swing.JPanel {
         initComponents();
         loadTypes();
         loadStatus();
-        loadUsers();
+        loadUsers("SELECT * FROM `user`"
+                + "INNER JOIN `user_type` ON `user`.`user_type_id` = `user_type`.`id`"
+                + "INNER JOIN `user_status` ON `user`.`status_id` = `user_status`.`id`");
         this.home = home;
     }
 
-    private void loadUsers() {
+    private void loadUsers(String query) {
 
         try {
             DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
             dtm.setRowCount(0);
 
-            ResultSet resultSet = MySQL2.executeSearch("SELECT * FROM `user`"
-                    + "INNER JOIN `user_type` ON `user`.`user_type_id` = `user_type`.`id`"
-                    + "INNER JOIN `user_status` ON `user`.`status_id` = `user_status`.`id`");
+            ResultSet resultSet = MySQL2.executeSearch(query);
 
             while (resultSet.next()) {
                 Vector vector = new Vector();
@@ -115,8 +115,8 @@ public class UserManagement1 extends javax.swing.JPanel {
         jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
@@ -143,6 +143,12 @@ public class UserManagement1 extends javax.swing.JPanel {
         jLabel3.setText("Last Name");
 
         jLabel4.setText("Username");
+
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField3KeyReleased(evt);
+            }
+        });
 
         jLabel5.setText("Mobile");
 
@@ -188,8 +194,8 @@ public class UserManagement1 extends javax.swing.JPanel {
                     .addComponent(jTextField2)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3)
                     .addComponent(jTextField4)
+                    .addComponent(jTextField3)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
@@ -217,11 +223,11 @@ public class UserManagement1 extends javax.swing.JPanel {
                 .addGap(10, 10, 10)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(10, 10, 10)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -342,10 +348,29 @@ public class UserManagement1 extends javax.swing.JPanel {
                 jTextField4.setText(String.valueOf(jTable1.getValueAt(selectedRow, 4)));
                 jComboBox1.setSelectedItem(String.valueOf(jTable1.getValueAt(selectedRow, 5)));
                 jComboBox2.setSelectedItem(String.valueOf(jTable1.getValueAt(selectedRow, 6)));
-            }   
+            }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
+    private void jTextField3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyReleased
+        String text = jTextField3.getText();
+
+        loadUsers("SELECT * FROM `user`"
+                + "INNER JOIN `user_type` ON `user`.`user_type_id` = `user_type`.`id`"
+                + "INNER JOIN `user_status` ON `user`.`status_id` = `user_status`.`id`"
+                + "WHERE `mobile` LIKE '%" + text + "%'");
+        reset();
+        jTextField3.setText(text);
+    }//GEN-LAST:event_jTextField3KeyReleased
+
+    private void reset(){
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jComboBox1.setSelectedIndex(0);
+        jComboBox2.setSelectedIndex(0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
