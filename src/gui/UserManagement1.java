@@ -6,6 +6,7 @@ package gui;
 
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL2;
@@ -17,11 +18,14 @@ import model.MySQL2;
 public class UserManagement1 extends javax.swing.JPanel {
 
     private Home home;
+
     /**
      * Creates new form UserManagement1
      */
     public UserManagement1(Home home) {
         initComponents();
+        loadTypes();
+        loadStatus();
         loadUsers();
         this.home = home;
     }
@@ -34,7 +38,7 @@ public class UserManagement1 extends javax.swing.JPanel {
 
             ResultSet resultSet = MySQL2.executeSearch("SELECT * FROM `user`"
                     + "INNER JOIN `user_type` ON `user`.`user_type_id` = `user_type`.`id`"
-                    + "INNER JOIN `status` ON `user`.`status_id` = `status`.`id`");
+                    + "INNER JOIN `user_status` ON `user`.`status_id` = `user_status`.`id`");
 
             while (resultSet.next()) {
                 Vector vector = new Vector();
@@ -47,6 +51,47 @@ public class UserManagement1 extends javax.swing.JPanel {
                 vector.add(resultSet.getString("status"));
                 dtm.addRow(vector);
             }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadTypes() {
+        try {
+            ResultSet rs1 = MySQL2.executeSearch("SELECT * FROM `user_type`");
+
+            Vector vector = new Vector();
+            vector.add("Select");
+
+            while (rs1.next()) {
+                vector.add(rs1.getString("type"));
+            }
+            DefaultComboBoxModel comboBoxModel = (DefaultComboBoxModel) jComboBox1.getModel();
+            comboBoxModel.removeAllElements();
+            comboBoxModel.addAll(vector);
+            jComboBox1.setSelectedIndex(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadStatus() {
+        try {
+            ResultSet rs1 = MySQL2.executeSearch("SELECT * FROM `user_status`");
+
+            Vector vector = new Vector();
+            vector.add("Select");
+
+            while (rs1.next()) {
+                vector.add(rs1.getString("status"));
+            }
+            DefaultComboBoxModel comboBoxModel1 = (DefaultComboBoxModel) jComboBox2.getModel();
+            comboBoxModel1.removeAllElements();
+            comboBoxModel1.addAll(vector);
+            jComboBox2.setSelectedIndex(0);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,6 +125,8 @@ public class UserManagement1 extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -101,7 +148,7 @@ public class UserManagement1 extends javax.swing.JPanel {
 
         jLabel6.setText("Password");
 
-        jLabel7.setText("Password");
+        jLabel7.setText("Type");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -122,6 +169,10 @@ public class UserManagement1 extends javax.swing.JPanel {
                 jButton3ActionPerformed(evt);
             }
         });
+
+        jLabel9.setText("Status");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -145,7 +196,9 @@ public class UserManagement1 extends javax.swing.JPanel {
                     .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel9)
+                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,6 +230,10 @@ public class UserManagement1 extends javax.swing.JPanel {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -206,6 +263,11 @@ public class UserManagement1 extends javax.swing.JPanel {
             }
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/close.png"))); // NOI18N
@@ -246,7 +308,7 @@ public class UserManagement1 extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 1, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,7 +316,7 @@ public class UserManagement1 extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 1, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -270,12 +332,27 @@ public class UserManagement1 extends javax.swing.JPanel {
         this.home.removeUserManagement();
     }//GEN-LAST:event_jLabel8MouseClicked
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+            int selectedRow = jTable1.getSelectedRow();
+            if (selectedRow != -1) {
+                jTextField1.setText(String.valueOf(jTable1.getValueAt(selectedRow, 1)));
+                jTextField2.setText(String.valueOf(jTable1.getValueAt(selectedRow, 2)));
+                jTextField3.setText(String.valueOf(jTable1.getValueAt(selectedRow, 3)));
+                jTextField4.setText(String.valueOf(jTable1.getValueAt(selectedRow, 4)));
+                jComboBox1.setSelectedItem(String.valueOf(jTable1.getValueAt(selectedRow, 5)));
+                jComboBox2.setSelectedItem(String.valueOf(jTable1.getValueAt(selectedRow, 6)));
+            }   
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -284,6 +361,7 @@ public class UserManagement1 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField1;
