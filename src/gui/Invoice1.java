@@ -7,6 +7,7 @@ package gui;
 import java.sql.ResultSet;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL2;
 
@@ -20,8 +21,8 @@ public class Invoice1 extends javax.swing.JPanel {
 
     public Invoice1(Home home) {
         initComponents();
-        jTextField9.grabFocus();
         this.home = home;
+        jTextField9.grabFocus();
     }
 
     /**
@@ -215,6 +216,11 @@ public class Invoice1 extends javax.swing.JPanel {
 
         jLabel25.setText("Barcode");
 
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
         jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextField9KeyReleased(evt);
@@ -514,7 +520,13 @@ public class Invoice1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        
+    }//GEN-LAST:event_jTextField9KeyReleased
+
+    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+        if (jTextField9.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Barcode is empty");
+        } else {
             String barcode = jTextField9.getText();
 
             try {
@@ -572,9 +584,10 @@ public class Invoice1 extends javax.swing.JPanel {
                 e.printStackTrace();
             }
         }
-    }//GEN-LAST:event_jTextField9KeyReleased
+    }//GEN-LAST:event_jTextField9ActionPerformed
 
     private void reset() {
+        jTextField9.setText("");
         jLabel32.setText("");
         jLabel33.setText("");
         jLabel38.setText("");
