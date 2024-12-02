@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `brand` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.brand: ~0 rows (approximately)
+-- Dumping data for table myshop.brand: ~3 rows (approximately)
 INSERT INTO `brand` (`id`, `name`) VALUES
 	(1, 'adidas'),
 	(2, 'Nike'),
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `colour` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.colour: ~0 rows (approximately)
+-- Dumping data for table myshop.colour: ~3 rows (approximately)
 INSERT INTO `colour` (`id`, `name`) VALUES
 	(1, 'Red'),
 	(2, 'Black'),
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `main_category` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.main_category: ~0 rows (approximately)
+-- Dumping data for table myshop.main_category: ~3 rows (approximately)
 INSERT INTO `main_category` (`id`, `c_name`) VALUES
 	(1, 'T-Shirt'),
 	(2, 'Shoes'),
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `product` (
   CONSTRAINT `fk_product_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.product: ~0 rows (approximately)
+-- Dumping data for table myshop.product: ~2 rows (approximately)
 INSERT INTO `product` (`id`, `name`, `brand_id`, `category_id`) VALUES
 	(1, 'Mens L Size T Shirt ', 1, 1),
 	(2, 'Ladies T-Shirt', 2, 2);
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `size` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.size: ~0 rows (approximately)
+-- Dumping data for table myshop.size: ~4 rows (approximately)
 INSERT INTO `size` (`id`, `name`) VALUES
 	(1, 'Small'),
 	(2, 'Large'),
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `stock` (
   CONSTRAINT `fk_stock_size1` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.stock: ~0 rows (approximately)
+-- Dumping data for table myshop.stock: ~2 rows (approximately)
 INSERT INTO `stock` (`barcode`, `product_id`, `colour_id`, `size_id`, `selling_price`, `available_qty`) VALUES
 	(1234, 1, 1, 2, 2000, 5),
 	(1235, 2, 2, 1, 2350, 10);
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `sub_category` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.sub_category: ~0 rows (approximately)
+-- Dumping data for table myshop.sub_category: ~4 rows (approximately)
 INSERT INTO `sub_category` (`id`, `name`) VALUES
 	(1, 'Mens T-Shirts'),
 	(2, 'Kids T-Shirts'),

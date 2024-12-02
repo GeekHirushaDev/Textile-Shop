@@ -6,6 +6,8 @@ package gui;
 
 import java.sql.ResultSet;
 import java.awt.event.KeyEvent;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 import model.MySQL2;
 
 /**
@@ -528,14 +530,14 @@ public class Invoice1 extends javax.swing.JPanel {
                 if (resultSet.next()) {
                     String pid = resultSet.getString("product.id");
                     String pName = resultSet.getString("product.name");
-                    String mCat = resultSet.getString("main_category.name");
+                    String mCat = resultSet.getString("main_category.c_name");
                     String sCat = resultSet.getString("sub_category.name");
                     String brand = resultSet.getString("brand.name");
                     String colour = resultSet.getString("colour.name");
                     String size = resultSet.getString("size.name");
                     String sPrice = resultSet.getString("stock.selling_price");
                     String availability = resultSet.getString("stock.available_qty");
-                    
+
                     jLabel32.setText(pid);
                     jLabel33.setText(pName);
                     jLabel38.setText(mCat);
@@ -545,6 +547,22 @@ public class Invoice1 extends javax.swing.JPanel {
                     jLabel37.setText(size);
                     jFormattedTextField1.setText(sPrice);
                     jLabel42.setText(availability);
+
+                    Vector vector = new Vector();
+                    vector.add(barcode);
+                    vector.add(pid);
+                    vector.add(pName);
+                    vector.add(mCat);
+                    vector.add(sCat);
+                    vector.add(brand);
+                    vector.add(colour);
+                    vector.add(size);
+                    vector.add(sPrice);
+                    vector.add(availability);
+
+                    DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                    dtm.addRow(vector);
+                    
                 }
             } catch (Exception e) {
                 e.printStackTrace();
