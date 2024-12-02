@@ -16,7 +16,7 @@
 
 
 -- Dumping database structure for myshop
-CREATE DATABASE IF NOT EXISTS `myshop` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `myshop` /*!40100 DEFAULT CHARACTER SET utf8mb3 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `myshop`;
 
 -- Dumping structure for table myshop.brand
@@ -27,93 +27,67 @@ CREATE TABLE IF NOT EXISTS `brand` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.brand: ~0 rows (approximately)
+INSERT INTO `brand` (`id`, `name`) VALUES
+	(1, 'adidas'),
+	(2, 'Nike'),
+	(3, 'Cocodile');
 
--- Dumping structure for table myshop.catagory
-CREATE TABLE IF NOT EXISTS `catagory` (
+-- Dumping structure for table myshop.category
+CREATE TABLE IF NOT EXISTS `category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `main_category_id` int NOT NULL,
+  `sub_category_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_category_main_category1_idx` (`main_category_id`),
+  KEY `fk_category_sub_category1_idx` (`sub_category_id`),
+  CONSTRAINT `fk_category_main_category1` FOREIGN KEY (`main_category_id`) REFERENCES `main_category` (`id`),
+  CONSTRAINT `fk_category_sub_category1` FOREIGN KEY (`sub_category_id`) REFERENCES `sub_category` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Dumping data for table myshop.category: ~2 rows (approximately)
+INSERT INTO `category` (`id`, `main_category_id`, `sub_category_id`) VALUES
+	(1, 1, 1),
+	(2, 1, 3);
+
+-- Dumping structure for table myshop.colour
+CREATE TABLE IF NOT EXISTS `colour` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.catagory: ~0 rows (approximately)
-
--- Dumping structure for table myshop.colour
-CREATE TABLE IF NOT EXISTS `colour` (
-  `id` int NOT NULL,
-  `colour` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
 -- Dumping data for table myshop.colour: ~0 rows (approximately)
+INSERT INTO `colour` (`id`, `name`) VALUES
+	(1, 'Red'),
+	(2, 'Black'),
+	(3, 'Yellow');
 
 -- Dumping structure for table myshop.customer
 CREATE TABLE IF NOT EXISTS `customer` (
   `mobile` varchar(10) NOT NULL,
-  `fname` varchar(45) NOT NULL,
+  `fname` varchar(45) DEFAULT NULL,
   `lname` varchar(45) NOT NULL,
-  `point` double NOT NULL,
+  `points` double NOT NULL,
   PRIMARY KEY (`mobile`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.customer: ~0 rows (approximately)
 
--- Dumping structure for table myshop.damage_stock
-CREATE TABLE IF NOT EXISTS `damage_stock` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `qty` int NOT NULL,
-  `status` varchar(45) NOT NULL,
-  `stock_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_damage_stock_stock1_idx` (`stock_id`),
-  CONSTRAINT `fk_damage_stock_stock1` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Dumping data for table myshop.damage_stock: ~0 rows (approximately)
-
--- Dumping structure for table myshop.grn
-CREATE TABLE IF NOT EXISTS `grn` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `total` double NOT NULL,
-  `suplier_id` int NOT NULL,
-  `payment_method_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_grn_suplier1_idx` (`suplier_id`),
-  KEY `fk_grn_payment_method1_idx` (`payment_method_id`),
-  CONSTRAINT `fk_grn_payment_method1` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`),
-  CONSTRAINT `fk_grn_suplier1` FOREIGN KEY (`suplier_id`) REFERENCES `suplier` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Dumping data for table myshop.grn: ~0 rows (approximately)
-
--- Dumping structure for table myshop.grn_item
-CREATE TABLE IF NOT EXISTS `grn_item` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `buying_price` double NOT NULL,
-  `qty` double NOT NULL,
-  `grn_id` int NOT NULL,
-  `stock_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_grn_item_grn1_idx` (`grn_id`),
-  KEY `fk_grn_item_stock1_idx` (`stock_id`),
-  CONSTRAINT `fk_grn_item_grn1` FOREIGN KEY (`grn_id`) REFERENCES `grn` (`id`),
-  CONSTRAINT `fk_grn_item_stock1` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Dumping data for table myshop.grn_item: ~0 rows (approximately)
-
 -- Dumping structure for table myshop.invoice
 CREATE TABLE IF NOT EXISTS `invoice` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `date` date NOT NULL,
-  `total` double NOT NULL,
+  `date_time` datetime NOT NULL,
+  `payment` double NOT NULL,
   `customer_mobile` varchar(10) NOT NULL,
   `payment_method_id` int NOT NULL,
+  `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_invoice_customer1_idx` (`customer_mobile`),
   KEY `fk_invoice_payment_method1_idx` (`payment_method_id`),
+  KEY `fk_invoice_user1_idx` (`user_id`),
   CONSTRAINT `fk_invoice_customer1` FOREIGN KEY (`customer_mobile`) REFERENCES `customer` (`mobile`),
-  CONSTRAINT `fk_invoice_payment_method1` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`)
+  CONSTRAINT `fk_invoice_payment_method1` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`),
+  CONSTRAINT `fk_invoice_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.invoice: ~0 rows (approximately)
@@ -123,20 +97,33 @@ CREATE TABLE IF NOT EXISTS `invoice_item` (
   `id` int NOT NULL AUTO_INCREMENT,
   `qty` double NOT NULL,
   `invoice_id` int NOT NULL,
-  `stock_id` int NOT NULL,
+  `stock_barcode` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_invoice_item_invoice1_idx` (`invoice_id`),
-  KEY `fk_invoice_item_stock1_idx` (`stock_id`),
+  KEY `fk_invoice_item_stock1_idx` (`stock_barcode`),
   CONSTRAINT `fk_invoice_item_invoice1` FOREIGN KEY (`invoice_id`) REFERENCES `invoice` (`id`),
-  CONSTRAINT `fk_invoice_item_stock1` FOREIGN KEY (`stock_id`) REFERENCES `stock` (`id`)
+  CONSTRAINT `fk_invoice_item_stock1` FOREIGN KEY (`stock_barcode`) REFERENCES `stock` (`barcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.invoice_item: ~0 rows (approximately)
 
+-- Dumping structure for table myshop.main_category
+CREATE TABLE IF NOT EXISTS `main_category` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `c_name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Dumping data for table myshop.main_category: ~0 rows (approximately)
+INSERT INTO `main_category` (`id`, `c_name`) VALUES
+	(1, 'T-Shirt'),
+	(2, 'Shoes'),
+	(3, 'Watches');
+
 -- Dumping structure for table myshop.payment_method
 CREATE TABLE IF NOT EXISTS `payment_method` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `metod` varchar(10) NOT NULL,
+  `method` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -145,77 +132,70 @@ CREATE TABLE IF NOT EXISTS `payment_method` (
 -- Dumping structure for table myshop.product
 CREATE TABLE IF NOT EXISTS `product` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) NOT NULL,
+  `name` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `brand_id` int NOT NULL,
-  `catagory_id` int NOT NULL,
+  `category_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_product_brand1_idx` (`brand_id`),
-  KEY `fk_product_catagory1_idx` (`catagory_id`),
+  KEY `fk_product_category1_idx` (`category_id`),
   CONSTRAINT `fk_product_brand1` FOREIGN KEY (`brand_id`) REFERENCES `brand` (`id`),
-  CONSTRAINT `fk_product_catagory1` FOREIGN KEY (`catagory_id`) REFERENCES `catagory` (`id`)
+  CONSTRAINT `fk_product_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.product: ~0 rows (approximately)
-
--- Dumping structure for table myshop.product_has_colour
-CREATE TABLE IF NOT EXISTS `product_has_colour` (
-  `product_id` int NOT NULL,
-  `colour_id` int NOT NULL,
-  PRIMARY KEY (`product_id`,`colour_id`),
-  KEY `fk_product_has_colour_colour1_idx` (`colour_id`),
-  KEY `fk_product_has_colour_product1_idx` (`product_id`),
-  CONSTRAINT `fk_product_has_colour_colour1` FOREIGN KEY (`colour_id`) REFERENCES `colour` (`id`),
-  CONSTRAINT `fk_product_has_colour_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Dumping data for table myshop.product_has_colour: ~0 rows (approximately)
-
--- Dumping structure for table myshop.product_has_size
-CREATE TABLE IF NOT EXISTS `product_has_size` (
-  `product_id` int NOT NULL,
-  `size_id` int NOT NULL,
-  PRIMARY KEY (`product_id`,`size_id`),
-  KEY `fk_product_has_size_size1_idx` (`size_id`),
-  KEY `fk_product_has_size_product1_idx` (`product_id`),
-  CONSTRAINT `fk_product_has_size_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  CONSTRAINT `fk_product_has_size_size1` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Dumping data for table myshop.product_has_size: ~0 rows (approximately)
+INSERT INTO `product` (`id`, `name`, `brand_id`, `category_id`) VALUES
+	(1, 'Mens L Size T Shirt ', 1, 1),
+	(2, 'Ladies T-Shirt', 2, 2);
 
 -- Dumping structure for table myshop.size
 CREATE TABLE IF NOT EXISTS `size` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `size` varchar(45) NOT NULL,
+  `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.size: ~0 rows (approximately)
+INSERT INTO `size` (`id`, `name`) VALUES
+	(1, 'Small'),
+	(2, 'Large'),
+	(3, 'XLarge'),
+	(4, 'XXLarge');
 
 -- Dumping structure for table myshop.stock
 CREATE TABLE IF NOT EXISTS `stock` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `selling_price` double NOT NULL,
-  `qty` double NOT NULL,
-  `status` int NOT NULL,
+  `barcode` int NOT NULL,
   `product_id` int NOT NULL,
-  PRIMARY KEY (`id`),
+  `colour_id` int NOT NULL,
+  `size_id` int NOT NULL,
+  `selling_price` double NOT NULL,
+  `available_qty` int NOT NULL,
+  PRIMARY KEY (`barcode`),
   KEY `fk_stock_product1_idx` (`product_id`),
-  CONSTRAINT `fk_stock_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`)
+  KEY `fk_stock_size1_idx` (`size_id`),
+  KEY `fk_stock_colour1_idx` (`colour_id`),
+  CONSTRAINT `fk_stock_colour1` FOREIGN KEY (`colour_id`) REFERENCES `colour` (`id`),
+  CONSTRAINT `fk_stock_product1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  CONSTRAINT `fk_stock_size1` FOREIGN KEY (`size_id`) REFERENCES `size` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.stock: ~0 rows (approximately)
+INSERT INTO `stock` (`barcode`, `product_id`, `colour_id`, `size_id`, `selling_price`, `available_qty`) VALUES
+	(1234, 1, 1, 2, 2000, 5),
+	(1235, 2, 2, 1, 2350, 10);
 
--- Dumping structure for table myshop.suplier
-CREATE TABLE IF NOT EXISTS `suplier` (
+-- Dumping structure for table myshop.sub_category
+CREATE TABLE IF NOT EXISTS `sub_category` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fname` varchar(45) NOT NULL,
-  `lname` varchar(45) NOT NULL,
-  `email` varchar(45) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
--- Dumping data for table myshop.suplier: ~0 rows (approximately)
+-- Dumping data for table myshop.sub_category: ~0 rows (approximately)
+INSERT INTO `sub_category` (`id`, `name`) VALUES
+	(1, 'Mens T-Shirts'),
+	(2, 'Kids T-Shirts'),
+	(3, 'Ladies Tshirts'),
+	(4, 'Mens Watches');
 
 -- Dumping structure for table myshop.user
 CREATE TABLE IF NOT EXISTS `user` (
@@ -223,19 +203,19 @@ CREATE TABLE IF NOT EXISTS `user` (
   `fname` varchar(45) NOT NULL,
   `lname` varchar(45) NOT NULL,
   `mobile` varchar(10) NOT NULL,
-  `username` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `username` varchar(45) NOT NULL,
   `password` varchar(45) NOT NULL,
   `user_type_id` int NOT NULL,
-  `status_id` int NOT NULL,
+  `user_status_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user_user_type_idx` (`user_type_id`),
-  KEY `fk_user_status1_idx` (`status_id`),
-  CONSTRAINT `fk_user_status1` FOREIGN KEY (`status_id`) REFERENCES `user_status` (`id`),
+  KEY `fk_user_user_status1_idx` (`user_status_id`),
+  CONSTRAINT `fk_user_user_status1` FOREIGN KEY (`user_status_id`) REFERENCES `user_status` (`id`),
   CONSTRAINT `fk_user_user_type` FOREIGN KEY (`user_type_id`) REFERENCES `user_type` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- Dumping data for table myshop.user: ~1 rows (approximately)
-INSERT INTO `user` (`id`, `fname`, `lname`, `mobile`, `username`, `password`, `user_type_id`, `status_id`) VALUES
+INSERT INTO `user` (`id`, `fname`, `lname`, `mobile`, `username`, `password`, `user_type_id`, `user_status_id`) VALUES
 	(1, 'Hirusha', 'Dayarathna', '0726733332', 'hirusha', 'pass', 1, 1);
 
 -- Dumping structure for table myshop.user_status

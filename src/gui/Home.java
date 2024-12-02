@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 public class Home extends javax.swing.JFrame {
 
     public static UserManagement1 us;
+    public static Invoice1 in;
 
     /**
      * Creates new form Home
@@ -28,11 +29,25 @@ public class Home extends javax.swing.JFrame {
         us = null;
         SwingUtilities.updateComponentTreeUI(jPanel2);
     }
+    
+    public void removeInvoice() {
+        jPanel2.remove(in);
+        in = null;
+        SwingUtilities.updateComponentTreeUI(jPanel2);
+    }
 
     public void addUserManagement() {
         if (us == null) {
             us = new UserManagement1(this);
             jPanel2.add(us, BorderLayout.CENTER);
+            SwingUtilities.updateComponentTreeUI(jPanel2);
+        }
+    }
+
+    public void addInvoice() {
+        if (in == null) {
+            in = new Invoice1(this);
+            jPanel2.add(in, BorderLayout.CENTER);
             SwingUtilities.updateComponentTreeUI(jPanel2);
         }
     }
@@ -48,6 +63,7 @@ public class Home extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,13 +78,22 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Invoice");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -76,11 +101,14 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(605, Short.MAX_VALUE))
+                .addGap(27, 27, 27)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(543, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
 
+        jPanel2.setMaximumSize(new java.awt.Dimension(1300, 610));
         jPanel2.setLayout(new java.awt.BorderLayout());
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -91,6 +119,10 @@ public class Home extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         addUserManagement();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        addInvoice();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -109,6 +141,7 @@ public class Home extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables

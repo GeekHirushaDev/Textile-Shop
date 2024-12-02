@@ -1,20 +1,22 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package gui;
 
+import java.sql.ResultSet;
 import java.awt.event.KeyEvent;
+import model.MySQL2;
 
 /**
  *
  * @author User
  */
-public class Invoice extends javax.swing.JFrame {
+public class Invoice1 extends javax.swing.JPanel {
 
     private Home home;
 
-    public Invoice(Home home) {
+    public Invoice1(Home home) {
         initComponents();
         this.home = home;
     }
@@ -86,7 +88,7 @@ public class Invoice extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1134, 610));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 255, 0)));
 
@@ -136,16 +138,15 @@ public class Invoice extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(16, 16, 16))
         );
 
@@ -491,8 +492,8 @@ public class Invoice extends javax.swing.JFrame {
                 .addGap(0, 20, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -503,19 +504,53 @@ public class Invoice extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            System.out.println("OK");
-        }
-    }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jLabel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel15MouseClicked
         this.home.removeInvoice();
     }//GEN-LAST:event_jLabel15MouseClicked
+
+    private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String barcode = jTextField9.getText();
+
+            try {
+                ResultSet resultSet = MySQL2.executeSearch("SELECT * FROM `stock`"
+                        + "INNER JOIN `size` ON `stock`.`size_id` = `size`.`id`"
+                        + "INNER JOIN `colour` ON `stock`.`colour_id` = `colour`.`id`"
+                        + "INNER JOIN `product` ON `stock`.`product_id` = `product`.`id`"
+                        + "INNER JOIN `brand` ON `product`.`brand_id` = `brand`.`id`"
+                        + "INNER JOIN `category` ON `product`.`category_id` = `category`.`id`"
+                        + "INNER JOIN `main_category` ON `category`.`main_category_id` = `main_category`.`id`"
+                        + "INNER JOIN `sub_category` ON `category`.`sub_category_id` = `sub_category`.`id`"
+                        + "WHERE `barcode` = '" + barcode + "'");
+
+                if (resultSet.next()) {
+                    String pid = resultSet.getString("product.id");
+                    String pName = resultSet.getString("product.name");
+                    String mCat = resultSet.getString("main_category.name");
+                    String sCat = resultSet.getString("sub_category.name");
+                    String brand = resultSet.getString("brand.name");
+                    String colour = resultSet.getString("colour.name");
+                    String size = resultSet.getString("size.name");
+                    String sPrice = resultSet.getString("stock.selling_price");
+                    String availability = resultSet.getString("stock.available_qty");
+                    
+                    jLabel32.setText(pid);
+                    jLabel33.setText(pName);
+                    jLabel38.setText(mCat);
+                    jLabel40.setText(sCat);
+                    jLabel31.setText(brand);
+                    jLabel35.setText(colour);
+                    jLabel37.setText(size);
+                    jFormattedTextField1.setText(sPrice);
+                    jLabel42.setText(availability);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jTextField9KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

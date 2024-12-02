@@ -19,16 +19,13 @@ public class UserManagement1 extends javax.swing.JPanel {
 
     private Home home;
 
-    /**
-     * Creates new form UserManagement1
-     */
     public UserManagement1(Home home) {
         initComponents();
         loadTypes();
         loadStatus();
         loadUsers("SELECT * FROM `user`"
                 + "INNER JOIN `user_type` ON `user`.`user_type_id` = `user_type`.`id`"
-                + "INNER JOIN `user_status` ON `user`.`status_id` = `user_status`.`id`");
+                + "INNER JOIN `user_status` ON `user`.`user_status_id` = `user_status`.`id`");
         this.home = home;
     }
 
