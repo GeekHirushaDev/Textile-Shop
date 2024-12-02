@@ -20,6 +20,7 @@ public class Invoice1 extends javax.swing.JPanel {
 
     public Invoice1(Home home) {
         initComponents();
+        jTextField9.grabFocus();
         this.home = home;
     }
 
@@ -562,7 +563,10 @@ public class Invoice1 extends javax.swing.JPanel {
 
                     DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                     dtm.addRow(vector);
-                    
+                    jTextField9.grabFocus();
+
+                } else {
+                    reset();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -570,6 +574,18 @@ public class Invoice1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jTextField9KeyReleased
 
+    private void reset() {
+        jLabel32.setText("");
+        jLabel33.setText("");
+        jLabel38.setText("");
+        jLabel40.setText("");
+        jLabel31.setText("");
+        jLabel35.setText("");
+        jLabel37.setText("");
+        jFormattedTextField1.setText("");
+        jLabel42.setText("");
+        jTextField9.grabFocus();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
