@@ -520,7 +520,7 @@ public class Invoice1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
-        
+
     }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
@@ -585,6 +585,13 @@ public class Invoice1 extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_jTextField9ActionPerformed
+
+    private void checkDuplicate(String barcode) {
+        int rowCount = jTable1.getRowCount();
+        for (int i = 0; i < rowCount; i++) {
+            String bc = (String)jTable1.getValueAt(i, 0);
+        }
+    }
 
     private void reset() {
         jTextField9.setText("");
