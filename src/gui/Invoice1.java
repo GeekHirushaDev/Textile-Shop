@@ -573,6 +573,12 @@ public class Invoice1 extends javax.swing.JPanel {
                     vector.add(sPrice);
                     vector.add(availability);
 
+                    if (checkDuplicate(barcode)) {
+                        int confirmation = JOptionPane.showConfirmDialog(this,
+                                "Duplicate item found. Do you want to update quantity?",
+                                "Duplicate Warning", JOptionPane.YES_NO_OPTION);
+                    }
+                    
                     DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                     dtm.addRow(vector);
                     jTextField9.grabFocus();
@@ -586,11 +592,15 @@ public class Invoice1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jTextField9ActionPerformed
 
-    private void checkDuplicate(String barcode) {
+    private boolean checkDuplicate(String barcode) {
         int rowCount = jTable1.getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            String bc = (String)jTable1.getValueAt(i, 0);
+            String bc = (String) jTable1.getValueAt(i, 0);
+            if (bc.equals(barcode)) {
+                return true;
+            }
         }
+        return false;
     }
 
     private void reset() {
