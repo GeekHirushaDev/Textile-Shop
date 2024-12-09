@@ -585,17 +585,30 @@ public class Invoice1 extends javax.swing.JPanel {
                     vector.add(sPrice);
                     vector.add(availability);
 
-                    if (checkDuplicate(barcode)) {
+                    String[] checkDuplicate = checkDuplicate(barcode);
+                    
+                    if (checkDuplicate[0].equals("true")) {
+                        
                         int confirmation = JOptionPane.showConfirmDialog(this,
                                 "Duplicate item found. Do you want to update quantity?",
                                 "Duplicate Warning", JOptionPane.YES_NO_OPTION);
+                        
                         if (confirmation == JOptionPane.YES_OPTION) {
-                            jFormattedTextField2.grabFocus();
+//                            jFormattedTextField2.grabFocus();
+//                            String updateQuantity = jFormattedTextField2.getText();
+                            String inputValue = JOptionPane.showInputDialog(this, "Add new quantity", "Update Quantity", JOptionPane.INFORMATION_MESSAGE);
+                            String valueAt = (String) jTable1.getValueAt(Integer.parseInt(checkDuplicate[1]), 9);
+                            int newQty = Integer.parseInt(inputValue);
+                            int updateQty = Integer.parseInt(valueAt) + newQty;
+                            jTable1.setValueAt(updateQty, Integer.parseInt(checkDuplicate[1]), 9);
                         }
+                        
+                    } else {
+                        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                        dtm.addRow(vector);
                     }
-
-                    DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-                    dtm.addRow(vector);
+                    
+                    reset();
                     jTextField9.grabFocus();
 
                 } else {
