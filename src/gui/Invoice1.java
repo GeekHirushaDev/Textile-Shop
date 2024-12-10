@@ -622,7 +622,9 @@ public class Invoice1 extends javax.swing.JPanel {
 
     private String[] checkDuplicate(String barcode) {
         int rowCount = jTable1.getRowCount();
-        String ar[] = new String[2];
+        
+        String ar[] = new String[2]; //Array structure > 0 index - Boolean value, 1 index - Integer value
+
         for (int i = 0; i < rowCount; i++) {
             String bc = (String) jTable1.getValueAt(i, 0);
             if (bc.equals(barcode)) {
@@ -631,6 +633,7 @@ public class Invoice1 extends javax.swing.JPanel {
                 return ar;
             }
         }
+        
         ar[0] = String.valueOf(false);
         ar[1] = String.valueOf(-1);
         return ar;
