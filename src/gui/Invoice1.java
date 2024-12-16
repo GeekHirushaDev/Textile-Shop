@@ -17,16 +17,41 @@ import model.MySQL2;
  * @author User
  */
 public class Invoice1 extends javax.swing.JPanel {
-
+    
     private Home home;
-
+    
+    private int totalQuantity;
+    private double total;
+    
     public Invoice1(Home home) {
         initComponents();
         loadPaymentMethod();
         this.home = home;
         jTextField9.grabFocus();
     }
-
+    
+    public void calculate() {
+        
+        totalQuantity = 0;
+        total = 0;
+        
+        int rowCount = jTable1.getRowCount();
+        
+        for (int i = 0; i < rowCount; i++) {
+            
+            String tableqty = String.valueOf(jTable1.getValueAt(i, 9));
+            String tableprice = String.valueOf(jTable1.getValueAt(i, 8));
+            
+            totalQuantity += Integer.parseInt(tableqty);
+            total += (Double.parseDouble(tableprice) * Integer.parseInt(tableqty));
+            
+        }
+        
+        jLabel8.setText(String.valueOf(totalQuantity));
+        jLabel7.setText(String.valueOf(total));
+        
+    }
+    
     private void loadPaymentMethod() {
         try {
             
@@ -34,17 +59,17 @@ public class Invoice1 extends javax.swing.JPanel {
             
             DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBox1.getModel();
             model.removeAllElements();
-
+            
             Vector vector = new Vector();
             vector.add("Select");
-
+            
             while (rs1.next()) {
                 vector.add(rs1.getString("method"));
             }
-
+            
             model.addAll(vector);
             jComboBox1.setSelectedIndex(0);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -439,6 +464,11 @@ public class Invoice1 extends javax.swing.JPanel {
             }
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jLabel4.setText("Payment Method");
@@ -639,12 +669,12 @@ public class Invoice1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
-
+        
         if (jTextField9.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Barcode is empty");
         } else {
             String barcode = jTextField9.getText();
-
+            
             try {
                 ResultSet resultSet = MySQL2.executeSearch("SELECT * FROM `stock`"
                         + "INNER JOIN `size` ON `stock`.`size_id` = `size`.`id`"
@@ -655,7 +685,7 @@ public class Invoice1 extends javax.swing.JPanel {
                         + "INNER JOIN `main_category` ON `category`.`main_category_id` = `main_category`.`id`"
                         + "INNER JOIN `sub_category` ON `category`.`sub_category_id` = `sub_category`.`id`"
                         + "WHERE `barcode` = '" + barcode + "'");
-
+                
                 if (resultSet.next()) {
                     String pid = resultSet.getString("product.id");
                     String pName = resultSet.getString("product.name");
@@ -666,7 +696,7 @@ public class Invoice1 extends javax.swing.JPanel {
                     String size = resultSet.getString("size.name");
                     String sPrice = resultSet.getString("stock.selling_price");
                     String availability = resultSet.getString("stock.available_qty");
-
+                    
                     jLabel32.setText(pid);
                     jLabel33.setText(pName);
                     jLabel38.setText(mCat);
@@ -676,15 +706,15 @@ public class Invoice1 extends javax.swing.JPanel {
                     jLabel37.setText(size);
                     jFormattedTextField1.setText(sPrice);
                     jLabel42.setText(availability);
-
+                    
                     int rowCount = jTable1.getRowCount();
-
+                    
                     boolean barcodeFound = false;
-
+                    
                     for (int i = 0; i < rowCount; i++) {
                         String barcode2 = String.valueOf(jTable1.getValueAt(i, 0));
                         String qty2 = String.valueOf(jTable1.getValueAt(i, 9));
-
+                        
                         if (barcode.equals(barcode2)) {
                             jTable1.setValueAt(Integer.parseInt(qty2) + 1, i, 9);
                             barcodeFound = true;
@@ -703,11 +733,13 @@ public class Invoice1 extends javax.swing.JPanel {
                         vector.add(size);
                         vector.add(sPrice);
                         vector.add(1);
-
+                        
                         DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
                         dtm.addRow(vector);
-                        reset();
                     }
+                    
+                    calculate();
+                    reset();
 
 //                    String[] checkDuplicate = checkDuplicate(barcode);
 //                    
@@ -743,9 +775,21 @@ public class Invoice1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jTextField9ActionPerformed
 
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+            int selectedRow = jTable1.getSelectedRow();
+            
+            if (selectedRow != -1) {
+                DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                dtm.removeRow(selectedRow);
+                calculate();
+            }
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+    
     private String[] checkDuplicate(String barcode) {
         int rowCount = jTable1.getRowCount();
-
+        
         String ar[] = new String[2]; //Array structure > 0 index - Boolean value, 1 index - Integer value
 
         for (int i = 0; i < rowCount; i++) {
@@ -756,12 +800,12 @@ public class Invoice1 extends javax.swing.JPanel {
                 return ar;
             }
         }
-
+        
         ar[0] = String.valueOf(false);
         ar[1] = String.valueOf(-1);
         return ar;
     }
-
+    
     private void reset() {
         jTextField9.setText("");
         jLabel32.setText("");
