@@ -7,6 +7,7 @@ package gui;
 import java.sql.ResultSet;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL2;
@@ -21,8 +22,32 @@ public class Invoice1 extends javax.swing.JPanel {
 
     public Invoice1(Home home) {
         initComponents();
+        loadPaymentMethod();
         this.home = home;
         jTextField9.grabFocus();
+    }
+
+    private void loadPaymentMethod() {
+        try {
+            
+            ResultSet rs1 = MySQL2.executeSearch("SELECT * FROM `payment_method` ORDER BY `method` ASC");
+            
+            DefaultComboBoxModel model = (DefaultComboBoxModel) jComboBox1.getModel();
+            model.removeAllElements();
+
+            Vector vector = new Vector();
+            vector.add("Select");
+
+            while (rs1.next()) {
+                vector.add(rs1.getString("method"));
+            }
+
+            model.addAll(vector);
+            jComboBox1.setSelectedIndex(0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
