@@ -532,10 +532,89 @@ public class Invoice1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel15MouseClicked
 
     private void jTextField9KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField9KeyReleased
+//
+//        if (jTextField9.getText().equals("")) {
+//            JOptionPane.showMessageDialog(this, "Barcode is empty");
+//        } else {
+//            String barcode = jTextField9.getText();
+//
+//            try {
+//                ResultSet resultSet = MySQL2.executeSearch("SELECT * FROM `stock`"
+//                        + "INNER JOIN `size` ON `stock`.`size_id` = `size`.`id`"
+//                        + "INNER JOIN `colour` ON `stock`.`colour_id` = `colour`.`id`"
+//                        + "INNER JOIN `product` ON `stock`.`product_id` = `product`.`id`"
+//                        + "INNER JOIN `brand` ON `product`.`brand_id` = `brand`.`id`"
+//                        + "INNER JOIN `category` ON `product`.`category_id` = `category`.`id`"
+//                        + "INNER JOIN `main_category` ON `category`.`main_category_id` = `main_category`.`id`"
+//                        + "INNER JOIN `sub_category` ON `category`.`sub_category_id` = `sub_category`.`id`"
+//                        + "WHERE `barcode` = '" + barcode + "'");
+//
+//                if (resultSet.next()) {
+//                    String pid = resultSet.getString("product.id");
+//                    String pName = resultSet.getString("product.name");
+//                    String mCat = resultSet.getString("main_category.c_name");
+//                    String sCat = resultSet.getString("sub_category.name");
+//                    String brand = resultSet.getString("brand.name");
+//                    String colour = resultSet.getString("colour.name");
+//                    String size = resultSet.getString("size.name");
+//                    String sPrice = resultSet.getString("stock.selling_price");
+//                    String availability = resultSet.getString("stock.available_qty");
+//
+//                    jLabel32.setText(pid);
+//                    jLabel33.setText(pName);
+//                    jLabel38.setText(mCat);
+//                    jLabel40.setText(sCat);
+//                    jLabel31.setText(brand);
+//                    jLabel35.setText(colour);
+//                    jLabel37.setText(size);
+//                    jFormattedTextField1.setText(sPrice);
+//                    jLabel42.setText(availability);
+//
+//                    int rowCount = jTable1.getRowCount();
+//
+//                    boolean barcodeFound = false;
+//
+//                    for (int i = 0; i < rowCount; i++) {
+//                        String barcode2 = String.valueOf(jTable1.getValueAt(i, 0));
+//                        String qty2 = String.valueOf(jTable1.getValueAt(i, 9));
+//
+//                        if (barcode.equals(barcode2)) {
+//                            jTable1.setValueAt(Integer.parseInt(qty2) + 1, i, 9);
+//                            barcodeFound = true;
+//                            break;
+//                        }
+//}
+//                        if (!barcodeFound) {
+//                            Vector vector = new Vector();
+//                            vector.add(barcode);
+//                            vector.add(pid);
+//                            vector.add(pName);
+//                            vector.add(mCat);
+//                            vector.add(sCat);
+//                            vector.add(brand);
+//                            vector.add(colour);
+//                            vector.add(size);
+//                            vector.add(sPrice);
+//                            vector.add(1);
+//
+//                            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+//                            dtm.addRow(vector);
+//                            reset();
+//                        }
+//                    
+//
+//                } else {
+//                    reset();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
     }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+
         if (jTextField9.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Barcode is empty");
         } else {
@@ -580,32 +659,29 @@ public class Invoice1 extends javax.swing.JPanel {
                     for (int i = 0; i < rowCount; i++) {
                         String barcode2 = String.valueOf(jTable1.getValueAt(i, 0));
                         String qty2 = String.valueOf(jTable1.getValueAt(i, 9));
-                        
+
                         if (barcode.equals(barcode2)) {
                             jTable1.setValueAt(Integer.parseInt(qty2) + 1, i, 9);
                             barcodeFound = true;
                             break;
                         }
+                    }
+                    if (!barcodeFound) {
+                        Vector vector = new Vector();
+                        vector.add(barcode);
+                        vector.add(pid);
+                        vector.add(pName);
+                        vector.add(mCat);
+                        vector.add(sCat);
+                        vector.add(brand);
+                        vector.add(colour);
+                        vector.add(size);
+                        vector.add(sPrice);
+                        vector.add(1);
 
-                        if (!barcodeFound) {
-
-                            Vector vector = new Vector();
-                            vector.add(barcode);
-                            vector.add(pid);
-                            vector.add(pName);
-                            vector.add(mCat);
-                            vector.add(sCat);
-                            vector.add(brand);
-                            vector.add(colour);
-                            vector.add(size);
-                            vector.add(sPrice);
-                            vector.add(availability);
-
-                            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-                            dtm.addRow(vector);
-                            reset();
-                            
-                        }
+                        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                        dtm.addRow(vector);
+                        reset();
                     }
 
 //                    String[] checkDuplicate = checkDuplicate(barcode);
