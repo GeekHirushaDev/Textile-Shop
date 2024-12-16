@@ -573,44 +573,66 @@ public class Invoice1 extends javax.swing.JPanel {
                     jFormattedTextField1.setText(sPrice);
                     jLabel42.setText(availability);
 
-                    Vector vector = new Vector();
-                    vector.add(barcode);
-                    vector.add(pid);
-                    vector.add(pName);
-                    vector.add(mCat);
-                    vector.add(sCat);
-                    vector.add(brand);
-                    vector.add(colour);
-                    vector.add(size);
-                    vector.add(sPrice);
-                    vector.add(availability);
+                    int rowCount = jTable1.getRowCount();
 
-                    String[] checkDuplicate = checkDuplicate(barcode);
-                    
-                    if (checkDuplicate[0].equals("true")) {
+                    boolean barcodeFound = false;
+
+                    for (int i = 0; i < rowCount; i++) {
+                        String barcode2 = String.valueOf(jTable1.getValueAt(i, 0));
+                        String qty2 = String.valueOf(jTable1.getValueAt(i, 9));
                         
-                        int confirmation = JOptionPane.showConfirmDialog(this,
-                                "Duplicate item found. Do you want to update quantity?",
-                                "Duplicate Warning", JOptionPane.YES_NO_OPTION);
-                        
-                        if (confirmation == JOptionPane.YES_OPTION) {
-//                            jFormattedTextField2.grabFocus();
-//                            String updateQuantity = jFormattedTextField2.getText();
-                            String inputValue = JOptionPane.showInputDialog(this, "Add new quantity", "Update Quantity", JOptionPane.INFORMATION_MESSAGE);
-                            String valueAt = (String) jTable1.getValueAt(Integer.parseInt(checkDuplicate[1]), 9);
-                            int newQty = Integer.parseInt(inputValue);
-                            int updateQty = Integer.parseInt(valueAt) + newQty;
-                            jTable1.setValueAt(updateQty, Integer.parseInt(checkDuplicate[1]), 9);
+                        if (barcode.equals(barcode2)) {
+                            jTable1.setValueAt(Integer.parseInt(qty2) + 1, i, 9);
+                            barcodeFound = true;
+                            break;
                         }
-                        
-                    } else {
-                        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
-                        dtm.addRow(vector);
-                    }
-                    
-                    reset();
-                    jTextField9.grabFocus();
 
+                        if (!barcodeFound) {
+
+                            Vector vector = new Vector();
+                            vector.add(barcode);
+                            vector.add(pid);
+                            vector.add(pName);
+                            vector.add(mCat);
+                            vector.add(sCat);
+                            vector.add(brand);
+                            vector.add(colour);
+                            vector.add(size);
+                            vector.add(sPrice);
+                            vector.add(availability);
+
+                            DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+                            dtm.addRow(vector);
+                            reset();
+                            
+                        }
+                    }
+
+//                    String[] checkDuplicate = checkDuplicate(barcode);
+//                    
+//                    if (checkDuplicate[0].equals("true")) {
+//                        
+//                        int confirmation = JOptionPane.showConfirmDialog(this,
+//                                "Duplicate item found. Do you want to update quantity?",
+//                                "Duplicate Warning", JOptionPane.YES_NO_OPTION);
+//                        
+//                        if (confirmation == JOptionPane.YES_OPTION) {
+////                            jFormattedTextField2.grabFocus();
+////                            String updateQuantity = jFormattedTextField2.getText();
+//                            String inputValue = JOptionPane.showInputDialog(this, "Add new quantity", "Update Quantity", JOptionPane.INFORMATION_MESSAGE);
+//                            String valueAt = (String) jTable1.getValueAt(Integer.parseInt(checkDuplicate[1]), 9);
+//                            int newQty = Integer.parseInt(inputValue);
+//                            int updateQty = Integer.parseInt(valueAt) + newQty;
+//                            jTable1.setValueAt(updateQty, Integer.parseInt(checkDuplicate[1]), 9);
+//                        }
+//                        
+//                    } else {
+//                        DefaultTableModel dtm = (DefaultTableModel) jTable1.getModel();
+//                        dtm.addRow(vector);
+//                    }
+//                    
+//                    reset();
+//                    jTextField9.grabFocus();
                 } else {
                     reset();
                 }
@@ -622,7 +644,7 @@ public class Invoice1 extends javax.swing.JPanel {
 
     private String[] checkDuplicate(String barcode) {
         int rowCount = jTable1.getRowCount();
-        
+
         String ar[] = new String[2]; //Array structure > 0 index - Boolean value, 1 index - Integer value
 
         for (int i = 0; i < rowCount; i++) {
@@ -633,7 +655,7 @@ public class Invoice1 extends javax.swing.JPanel {
                 return ar;
             }
         }
-        
+
         ar[0] = String.valueOf(false);
         ar[1] = String.valueOf(-1);
         return ar;
