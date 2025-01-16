@@ -6,7 +6,11 @@ package gui;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.BorderLayout;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.SwingUtilities;
+import java.util.logging.*;
 
 /**
  *
@@ -17,11 +21,31 @@ public class Home extends javax.swing.JFrame {
     public static UserManagement1 us;
     public static Invoice1 in;
 
-    /**
-     * Creates new form Home
-     */
+    // Logers Lecture 
+    private static final Logger logger = Logger.getLogger(Home.class.getName());
+    private static FileHandler handler;
+
     public Home() {
         initComponents();
+        initializelogging();
+    }
+
+    private void initializelogging() {
+        String homePath = System.getProperty("user.home");
+        String folderPath = homePath
+                + File.separator + "Documents"
+                + File.separator + "TextileShop"
+                + File.separator + "Logs";
+        File newFolder = new File(folderPath);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_hh-mm-ss");
+        System.out.println(sdf.format(new Date()));
+        
+        if (newFolder.exists()) {
+            return;
+        }
+        
+        newFolder.mkdirs();
+        System.out.println(folderPath);
     }
 
     public void removeUserManagement() {
@@ -29,7 +53,7 @@ public class Home extends javax.swing.JFrame {
         us = null;
         SwingUtilities.updateComponentTreeUI(jPanel2);
     }
-    
+
     public void removeInvoice() {
         jPanel2.remove(in);
         in = null;
