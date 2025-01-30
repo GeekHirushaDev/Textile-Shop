@@ -109,7 +109,7 @@ public class GenerateQRCode extends javax.swing.JFrame {
         });
     }
 
-    private void generateQRCode(String inputData) {
+     private void generateQRCode(String inputData) {
         try {
             // Create a JSON-like string with the required fields
             Map<String, String> qrData = new HashMap<>();
@@ -142,6 +142,7 @@ public class GenerateQRCode extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JTextField jTextField1;
